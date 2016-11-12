@@ -1,0 +1,9 @@
+The API endpoint is available at https://language.googleapis.com
+	- the endpoint provides 3 methods: analyzeEntities, analuzeSentiment, annotateText
+	- current version is v1beta1 with the API discovery document available at 
+	https://language.googleapis.com/$discovery/rest?version=v1beta1
+
+
+Make input for number of word replcacements youd like to do 
+
+Why don'e the errors thrown in cloud-vision-nodejs have line numbers?
