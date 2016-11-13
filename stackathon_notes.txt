@@ -7,3 +7,22 @@ The API endpoint is available at https://language.googleapis.com
 Make input for number of word replcacements youd like to do 
 
 Why don'e the errors thrown in cloud-vision-nodejs have line numbers?
+
+
+Attach punctuation to previous word.
+Make list of body parts, 
+verb past tense, present tense, future tense
+ver singular or plural
+
+handling contracts (and possesion "Harry's" ??) bc they have spaces in them
+
+fix the other MDLite classes so there is padding before each blank without it messing up the placeholder
+
+/*.mdl-textfield::after{
+  content: "test";
+}*/
+
+.mdl-textfield__label::after{
+  display: inline-block;
+  margin-right: -15px;
+}

@@ -1,0 +1,256 @@
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    padding: 8px;
+    color: #eeeeee;
+}
+
+li a:hover {
+  background-color: #dddddd;
+  color: #ffbf00;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display SC', serif;
+}
+
+
+h3, h4 {
+  color: black;
+}
+
+.splash {
+  max-width: 1024px;
+  text-align: center;
+  background-image: url(http://i67.tinypic.com/2m7e0d4.png);
+  background-repeat: no-repeat;
+}
+
+.splash-text {
+
+}
+
+.profile {
+
+}
+
+#orange {
+  font-style: italic;
+  font-size: 72px;
+  color: orange;
+  margin-top: -20px;
+  text-shadow: 2px 2px 5px #000;
+}
+
+#white {
+  color: white;
+  text-shadow: 2px 2px 5px #000;
+
+}
+
+#hmm {
+  font-size: 72px;
+  font-style: italic;
+  margin-left: -20px;
+  margin-bottom: -25px;
+  padding: 0px;
+  color: rgba(75,45,113, .15)
+}
+
+#looks {
+  font-style: bold;
+  margin: 0px;
+  padding: 0px;
+}
+
+#empty {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+#treat {
+  color: orange;
+  font-style: italic;
+  margin-top: 0px;
+  padding: 0px;
+  text-align: center;
+}
+
+#whynot {
+  padding: 0px;
+  margin: 0px;
+}
+
+.banner-text {
+  font-family: 'Playfair Display SC', serif;
+  margin: 0px;
+}
+
+#nav-brand {
+  margin: 5px;
+  color: white;
+  font-weight: bold;
+  font-style: italic;
+}
+
+span.icon-bar {
+  background-color: white;
+  color: black;
+  position: static;
+}
+
+.shop-item {
+  box-shadow:  0px 0px 16px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.shop-item:hover {
+  box-shadow:  0px 0px 16px rgba(75,45,113,0.7);
+}
+
+.item-title {
+  margin: 0px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.item-image {
+  margin-bottom: 10px;
+}
+
+.item-price {
+  color: rgba(75,45,113,1)
+}
+
+.item-container {
+  margin-top: 20px;
+}
+
+.item-description {
+  font-style: italic;
+}
+
+.child-container {
+    margin-top: 65px;
+
+}
+#logo-header {
+  font-weight: bold;
+  font-style: italic;
+  margin-bottom: 25px;
+  color: black;
+}
+
+.logout {
+  margin-top: 8px;
+  background-color: rgba(75,45,113, 1);
+  color: #eeeeee;
+}
+
+.container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.headshot {
+  padding: 25px;
+}
+
+#locate-us {
+  margin-bottom: 50px;
+}
+
+#map {
+  height: 400px;
+  width: 100%;
+}
+.navbar-brand { position: relative; z-index: 2; }
+
+.navbar-nav.navbar-right .btn { position: relative; z-index: 2; padding: 4px 20px; margin: 10px auto; transition: transform 0.3s; }
+
+.navbar .navbar-collapse { position: relative; overflow: hidden !important; }
+.navbar .navbar-collapse .navbar-right > li:last-child { padding-left: 22px; }
+
+.navbar .nav-collapse { position: absolute; z-index: 1; top: 0; left: 0; right: 0; bottom: 0; margin: 0; padding-right: 120px; padding-left: 80px; width: 100%; }
+.navbar.navbar-default .nav-collapse { background-color: #f8f8f8; }
+.navbar.navbar-inverse .nav-collapse { background-color: #222; }
+.navbar .nav-collapse .navbar-form { border-width: 0; box-shadow: none; }
+.nav-collapse>li { float: right; }
+
+.btn.btn-circle { border-radius: 50px; }
+.btn.btn-outline { background-color: transparent; }
+
+/*.navbar-nav.navbar-right .btn:not(.collapsed) {
+    background-color: rgb(111, 84, 153);
+    border-color: rgb(111, 84, 153);
+    color: rgb(255, 255, 255);
+}*/
+
+.navbar.navbar-default .nav-collapse,
+.navbar.navbar-inverse .nav-collapse {
+    height: auto !important;
+    transition: transform 0.3s;
+    transform: translate(0px,-50px);
+}
+.navbar.navbar-default .nav-collapse.in,
+.navbar.navbar-inverse .nav-collapse.in {
+    transform: translate(0px,0px);
+}
+
+
+@media screen and (max-width: 767px) {
+    .navbar .navbar-collapse .navbar-right > li:last-child { padding-left: 15px; padding-right: 15px; }
+
+    .navbar .nav-collapse { margin: 7.5px auto; padding: 0; }
+    .navbar .nav-collapse .navbar-form { margin: 0; }
+    .nav-collapse>li { float: none; }
+
+    .navbar.navbar-default .nav-collapse,
+    .navbar.navbar-inverse .nav-collapse {
+        transform: translate(-100%,0px);
+    }
+    .navbar.navbar-default .nav-collapse.in,
+    .navbar.navbar-inverse .nav-collapse.in {
+        transform: translate(0px,0px);
+    }
+
+    .navbar.navbar-default .nav-collapse.slide-down,
+    .navbar.navbar-inverse .nav-collapse.slide-down {
+        transform: translate(0px,-100%);
+    }
+    .navbar.navbar-default .nav-collapse.in.slide-down,
+    .navbar.navbar-inverse .nav-collapse.in.slide-down {
+        transform: translate(0px,0px);
+    }
+}
+
+.mdl-textfield{
+  padding: 20px 10px 0 0;
+}
+
+.mdl-textfield__label{
+  width: 90%;
+}
+
+.mdl-textfield__input{
+  width: 90%;
+}
+
+.mdl-textfield__label__icon {
+   position: absolute;
+   right: 10px;
+   top: 20px;
+}
