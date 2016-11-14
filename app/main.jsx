@@ -8,8 +8,9 @@ import Play from 'APP/app/components/Play'
 import Welcome from 'APP/app/components/Welcome'
 import Analyze from 'APP/app/components/Analyze'
 import store from './store'
-import PlayContainer from 'APP/app/containers/PlayContainer'
+import OriginalContainer from 'APP/app/containers/OriginalContainer'
 import ResultsContainer from 'APP/app/containers/ResultsContainer'
+import PlayContainer from 'APP/app/containers/PlayContainer'
 
 render (
   <Provider store={store}>
@@ -17,9 +18,9 @@ render (
    <Router history={browserHistory}>
    	<Route path='/' component={AppContainer} >
    		<IndexRoute component={Welcome}/>
-      <Route path="/play" component={PlayContainer} />
-      <Route path="/analyze" component={Analyze} />
-      <Route path="/madlib" component={ResultsContainer} />
+      <Route path="play" component={OriginalContainer}/> 
+      <Route path="analyze" component={Analyze} />
+      <Route path="madlib" component={ResultsContainer} />
    	</Route>
    </Router>
   </Provider>,

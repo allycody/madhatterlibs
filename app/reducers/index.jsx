@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import {inputText, words, POS, labels, entities, madlibText} from './text';
+import {inputText, words, POS, labels, entities, madlibText, numBlanks, complete} from './text';
 
 const initialState = {};
 
@@ -10,7 +10,9 @@ const rootReducer = combineReducers({
 	POS,
 	labels,
 	entities,
-	madlibText
+	madlibText,
+	numBlanks,
+	complete
 });
 
 

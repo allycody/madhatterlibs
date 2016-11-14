@@ -41,8 +41,6 @@ const languageClient = Language({
 router.post("/v1beta1/documents:annotateText", function(req, res, next){
 	console.log("INPUT TEXT: ", req.body.inputText)
 
-
-
   languageClient.annotate(req.body.inputText, { verbose: true }, (err, annotations) => {
     if (err) {
       console.error(err);
@@ -50,12 +48,16 @@ router.post("/v1beta1/documents:annotateText", function(req, res, next){
     }
 
   
-    console.log('Annotations: ', annotations);
-    console.log('Annotations: %j ', annotations);
+    //console.log('Annotations: ', annotations);
+    //console.log('Annotations: %j ', annotations);
     //console.log('People: ', annotations.entities.people);
     //console.log('People mentions: ', annotations.entities.people[0].mentions);
     
     var data = organizeAnnotations(annotations)
+    //console.log("DATA: ", data)
+    // if(data instanceof Error){
+    //   res.json({})
+    // }
     // var textToChange = annotations.tokens
     // var words = [];
     // var POS = [];
@@ -86,6 +88,13 @@ router.post("/v1beta1/documents:annotateText", function(req, res, next){
   //.then(res => console.log("annotateRes: ", res))
 
   //res.json({words, POS, labels, entities})
+
+})
+
+router.post("/submitComplete", function(req, res, next){
+  console.log("REQUEST ON SUBMIT: ", req.body)
+  var inputKeys = Object.keys(req.body)
+  res.send(req.body)
 
 })
 

@@ -26,3 +26,17 @@ fix the other MDLite classes so there is padding before each blank without it me
   display: inline-block;
   margin-right: -15px;
 }
+
+
+Once upon a time, there was a little boy who loved 
+dog
+.He ate cake for breakfast. He ate cake for lunch. He ate 
+NOUNfor dinner. He loves it when it 
+VERBchocolate. replace all other instances of the word.
+
+analyze story vs dialogue differently
+
+mad lib of the day. pull a news article
+
+
+i have it ignoring adjective modifiers likes "so" and "very"

@@ -8,6 +8,8 @@ const SET_POS = 'SET_POS';
 const SET_LABELS = 'SET_LABELS';
 const SET_ENTITIES = 'SET_ENTITIES';
 const SET_MADLIB = 'SET_MADLIB';
+const SET_NUMBLANKS = 'SET_NUMBLANKS';
+const SET_COMPLETE = 'SET_COMPLETE';
 
 //-------------------------------------------------------------------------
 
@@ -61,6 +63,22 @@ export const setEntities = (entities) => {
 	})
 }
 
+export const setNumBlanks = (numBlanks) => {
+	console.log("setting numBlanks to: ", numBlanks)
+	return ({
+		type: SET_NUMBLANKS,
+		numBlanks
+	})
+}
+
+export const setComplete = (complete) => {
+	console.log("in setentities action creator")
+	return ({
+		type: SET_COMPLETE,
+		complete
+	})
+}
+
 
 //-------------------------------------------------------------------------
 
@@ -108,7 +126,7 @@ export function POS(POS = [], action) {
 	}
 }
 
-export function labels(labels = '', action) {
+export function labels(labels = [], action) {
 	console.log("ACTION: ", action)
 	switch(action.type) {
 		case 'SET_LABELS':
@@ -118,13 +136,33 @@ export function labels(labels = '', action) {
 	}
 }
 
-export function entities(labels = '', action) {
+export function entities(entities = {}, action) {
 	console.log("ACTION: ", action)
 	switch(action.type) {
 		case 'SET_ENTITIES':
 			return action.entities
 		default:
 			return entities;
+	}
+}
+
+export function numBlanks(numBlanks = null, action) {
+	console.log("ACTION: ", action)
+	switch(action.type) {
+		case 'SET_NUMBLANKS':
+			return action.numBlanks
+		default:
+			return numBlanks;
+	}
+}
+
+export function complete(complete = 0, action) {
+	console.log("ACTION: ", action)
+	switch(action.type) {
+		case 'SET_COMPLETE':
+			return action.complete
+		default:
+			return complete;
 	}
 }
 
@@ -142,7 +180,19 @@ export const annotateText = (inputText) => ((dispatch) => {
 			dispatch(setLabels(res.labels))
 			dispatch(setEntities(res.entities))
 			dispatch(setMadlibText(res.madlibText))
+			dispatch(setNumBlanks(res.numBlanks))
+			dispatch(setComplete(1))
 		})
+})
+
+export const clearStore = () => ((dispatch) => {
+	dispatch(setWords(''))
+	dispatch(setPOS([]))
+	dispatch(setLabels([]))
+	dispatch(setEntities({}))
+	dispatch(setMadlibText([]))
+	dispatch(setNumBlanks(null))
+	dispatch(setComplete(0))
 })
 
 export const fetchItemById = (itemId) => ((dispatch) => {

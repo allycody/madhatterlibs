@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import { Textfield } from 'react-mdl'
+import { Textfield, Button } from 'react-mdl'
 // import gCloud from 'google-cloud'
 // import Language from '@google-cloud/language'
 
@@ -39,6 +39,14 @@ export default class Results extends Component{
 	handleSubmit(e){
 		e.preventDefault();
 	  	console.log("SUBMITTED MADLIB FORM")
+	  	console.log("all targets: ", e.target)
+	  	var keys = Object.keys(e.target)
+	  	console.log("keys: ", keys)
+	  	for(var i= 0; i < 5; i++){
+	  	console.log(`my val at ${i}: `, e.target[keys[i]].value)
+	  	browserHistory.push('/analyze')
+	  }
+	  	//console.log("what is the next key? : ", e.target[keys[1]].value)
 
 	  
 	 //  	var document = languageClient.document(e.target.inputText.value);
@@ -108,14 +116,38 @@ export default class Results extends Component{
 
 	render(){
 
-    //upload a file
+		if(this.props.numBlanks === null){
+			return(
+
+    			<div style={{padding: "30px 0px 30px 0px"}}>
+        			<div>PLEASE WAIT WHILE WE DISECT YOUR STORY</div>	
+        		</div>
+
+    			)
+		}
+
+    	else if(this.props.numBlanks === 0){
+    		return(
+
+    			<div style={{padding: "30px 0px 30px 0px"}}>
+        			<div>YOUR TEXT WAS NOT LONG ENOUGH OR YOU GAVE US TERRIBLE, NO-GOOD WORDS</div>
+        			<Button raised style={{margin: "20px 0 0px 0", display: "block"}} onClick={() => {
+        				this.props.resetStore()
+        				browserHistory.push('/play')}}>
+        				Try Again!
+        			</Button>
+
+        		</div>
+
+    			)
+    	}
 		return(
       <div>
-      <div style={{padding: "60px 0px 0px 0px"}}>
+      <div style={{padding: "30px 0px 30px 0px"}}>
         FILL THIS OUT
         </div>
 
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} method='post'>
         	 {this.props.madlibText.map(function(word, idx){
         	 	if(typeof word === "object"){
         	 		return (
@@ -123,6 +155,7 @@ export default class Results extends Component{
 			    			onChange={() => {}}
 			    			label={this.getPOS(idx)}
 			    			style={{width: '100px', display: "inline-block", padding: "0px, 3px, 0px, 3px"}}
+							name={idx}
 						>
 							<i className="material-icons mdl-textfield__label__icon">
 								{word.punc}
@@ -133,11 +166,12 @@ export default class Results extends Component{
         	 	return word + " "
         	 }, this)} 
         	<div style={{padding: "20px 0"}}>
-				<input type='submit' value='Submit' style={{display: "block"}}/>
+				<Button raised type='submit' value='Submit' style={{display: "block"}}>Submit</Button>
 			</div>
 		</form>
-		<Button raised onClick={() => {browserHistory.push('/play')}}>Button</Button>
-		<button onClick={() => {browserHistory.push('/play')}}> Make Another </button>
+		<Button raised style={{margin: "0 0 30px 0"}} onClick={() => {
+				this.props.resetStore()
+				browserHistory.push('/play')}}>Make Another</Button>
       </div>
 			)
 	}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
+import {Footer, FooterSection, FooterLinkList} from 'react-mdl'
 
 
 // export const ToggleButton = connect(
@@ -32,7 +33,7 @@ export default class App extends Component{
 		//console.log("propsLogout: ", this.props.logout)
 		return(
       <div>
-        <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav className="navbar navbar-inverse" role="navigation">
           <div className="container-fluid">
             <div className="navbar-header">
                 <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNav" aria-expanded="false">
@@ -49,15 +50,24 @@ export default class App extends Component{
               <ul className="nav navbar-nav">
                 <li><Link to="/play"> PLAY </Link></li>
                 <li><Link to="/analyze"> ANALYZE </Link></li>
-                
               </ul>
             </div>
           </div>
         </nav>
 
-  			<div className="container child-container" style={{padding: "60px 0px 0px 0px"}}>
+  			<div className="container child-container">
       		{this.props.children}
   			</div>
+
+        <Footer size="mini">
+          <FooterSection type="left" logo="Title">
+              <FooterLinkList>
+                  <a href="#">Help</a>
+                  <a href="#">Privacy & Terms</a>
+              </FooterLinkList>
+          </FooterSection>
+        </Footer>
+
       </div>
 			)
 	}

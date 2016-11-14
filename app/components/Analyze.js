@@ -54,9 +54,11 @@ export default class Analyze extends Component{
 
 	render(){
 
+
     //upload a file
 		return(
       <div>
+      	<a href='./App.js' download='Downloaded_File'>Download</a>
         Analyze
 
         <form onSubmit={this.handleSubmit}>

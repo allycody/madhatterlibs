@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import Play from 'APP/app/components/Play'
+import Original from 'APP/app/components/Original'
 import {setText, annotateText, setNumBlanks, clearStore} from '../reducers/text'
 
 
@@ -25,4 +25,4 @@ const mapDispatchToProps = dispatch => (
 		}
 	});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Play)
+export default connect(mapStateToProps, mapDispatchToProps)(Original)

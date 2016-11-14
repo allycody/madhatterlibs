@@ -24,7 +24,7 @@ import {Button} from 'react-mdl'
 
 
 
-export default class Play extends Component{
+export default class Original extends Component{
 	constructor(props){
 		super(props)
 		this.handleSubmit = this.handleSubmit.bind(this)
@@ -125,14 +125,26 @@ export default class Play extends Component{
 		return(
      
 		<div>
-    <h4>Play with the Mad Hatter</h4>
-    
-      <div className="row">
-       
-          <Button raised style={{margin: "0 0 30px 0"}} onClick={()=>{browserHistory.push('/original')}}> Make your own! </Button>
-          <Button raised style={{margin: "0 0 30px 0"}}> Try one of ours! </Button>
-       
+   
+    <form onSubmit={this.handleSubmit}>
+  
+      <div className="form-group row">
+        <label className="col-sm-4 col-form-label col-sm-4" htmlFor="txt">Input your story or dialogue here:</label>
+        <div className="col-lg-4 col-lg-8">
+          <textarea className="form-control" name="inputText" id="txt" type="password" />
+        </div>
       </div>
+      <div className="form-group row">
+        <div className="col-sm-4 col-xs-10">
+          <Button raised type='submit' value='Submit' style={{display: "block"}}>Submit</Button>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-4 col-xs-10">
+          <Button raised style={{margin: "0 0 30px 0"}}> Try one of ours! </Button>
+        </div>
+      </div>
+    </form>
 
   </div>
      
