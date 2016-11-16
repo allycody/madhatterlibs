@@ -129,7 +129,7 @@ export default class Play extends Component{
     
       <div className="row">
        
-          <Button raised style={{margin: "0 0 30px 0"}} onClick={()=>{browserHistory.push('/original')}}> Make your own! </Button>
+          <Button raised style={{margin: "0 0 30px 0"}} onClick={()=>{browserHistory.push('/play')}}> Make your own! </Button>
           <Button raised style={{margin: "0 0 30px 0"}}> Try one of ours! </Button>
        
       </div>

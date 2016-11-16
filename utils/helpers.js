@@ -10,6 +10,7 @@ function organizeAnnotations(annotations){
     var punctCount = 0;
     var labelsToIgnore = ['POSS', 'NEG', 'AUX', 'CCOMP', 'ADVMOD']
     var POStoIgnore = ['CONJ', 'PRON']
+    var wordsToIgnore = ['WAS', 'WERE', 'IS', 'WILL']
 
     // to optimize, try making an entities object that has the entity as the key
     // and type as the val, then you can easily look up if a word is an entity and
@@ -18,8 +19,6 @@ function organizeAnnotations(annotations){
     	var word = element.text.content;
     	var POStag = element.partOfSpeech.tag;
     	var label = element.dependencyEdge.label
-    	var labelsToIgnore = ['POSS', 'NEG', 'AUX', 'CCOMP', 'ADVMOD']
-    	var POStoIgnore = ['CONJ', 'PRON']
     	// generate arrays of the words, POS, and labels
     	// so they corresponding words and their tags can 
     	// be accessed by index
@@ -35,27 +34,47 @@ function organizeAnnotations(annotations){
 	      	// make a property for each POS
 	    	// the value of that key will be an array of
 	    	// indices that point to words with that POS tag
-		    if(labelsToIgnore.indexOf(label) !== -1 || POStoIgnore.indexOf(POStag) !== -1){
-		    	//do nothing
-		    }
-		    else{
-		      	if(POSindexes[element.partOfSpeech.tag]){
-		    		POSindexes[element.partOfSpeech.tag].push(idx - punctCount)
-		    	}
-		    	else{
-		    		POSindexes[element.partOfSpeech.tag] = [idx - punctCount]
-		    	}
-		}}
-    })
+		//     if(labelsToIgnore.indexOf(label) !== -1 || POStoIgnore.indexOf(POStag) !== -1){
+		//     	//do nothing
+		//     }
+		//     else{
+		//       	if(POSindexes[element.partOfSpeech.tag]){
+		//     		POSindexes[element.partOfSpeech.tag].push(idx - punctCount)
+		//     	}
+		//     	else{
+		//     		POSindexes[element.partOfSpeech.tag] = [idx - punctCount]
+		//     	}
+		// }}
+    }})
 
     var newData = replaceEntities(words, POS, labels, entities)
-    ({words, POS, labels} = newData)
-
+    words = newData.words;
+    labels = newData.labels;
+    POS = newData.POS
+    console.log("words: ", words)
+    var patt = new RegExp(/[.,\/#!$%\^&\*;:{}=\-_`~()]/, 'g')
 
 
     for(var i = 0; i < words.length; i++){
-
+    	var word = words[i].toUpperCase();
+    	if(patt.test(word.charAt(word.length - 1))){
+    		word = word.slice(0, -1)
+    	}
+    	console.log("word to uppercase: ", words[i].toUpperCase())
+    	if(labelsToIgnore.indexOf(labels[i]) !== -1 || POStoIgnore.indexOf(POS[i]) !== -1 || wordsToIgnore.indexOf(word) !== -1){
+		    	//do nothing
+		}
+		else{
+			if(POSindexes[POS[i]]){
+		   		POSindexes[POS[i]].push(i)
+		   	}
+		    else{
+		    	POSindexes[POS[i]] = [i]
+		    }
+		}
     }
+
+    console.log("POSindexes: ", POSindexes)
     // MAKE HELPER FUNCTION FOR FIND VERBS, NOUNS, ETC
     // Turn token json into one object with word : POS key/val pairs?
     // make an array that is split by words
@@ -68,14 +87,15 @@ function organizeAnnotations(annotations){
     //console.log("entities: ", entities)
     var madlibText = words.slice(0)
     var results = generateBlanks(madlibText, POSindexes)
-    ({numBlanks, madlibTextDisplay} = results)
-    madlibText = madlibTextDisplay;
+    madlibText = results.madlibTextDisplay;
+    var numBlanks = results.numBlanks
+    var blanks = results.toMakeBlank
     // if (numBlanks === 0){
     // 	return new Error("Your text was not long enough or you gave us terrible, no good words")
     // }
     // console.log("madlibText: ", madlibText)
     // console.log("words array: ", words)
-    return {words, POS, labels, entities, madlibText, numBlanks}
+    return {words, POS, labels, entities, madlibText, numBlanks, blanks}
 }
 
 // ********************************************
@@ -87,6 +107,7 @@ function generateBlanks(madlibText, POSindexes){
 	var verb = POSindexes.VERB ? POSindexes.VERB : []
 	var adv = POSindexes.ADV ? POSindexes.ADV : []
 	var num = POSindexes.NUM ? POSindexes.NUM : []
+	var entity = POSindexes.ENTITY ? POSindexes.ENTITY : []
 
 	//console.log("VERB BEFORE: ", verb)
 
@@ -94,6 +115,7 @@ function generateBlanks(madlibText, POSindexes){
 	verb = shuffle(verb);
 	adv = shuffle(adv);
 	num = shuffle(num)
+	entity = shuffle(entity)
 	
 	var patt = new RegExp(/[.,\/#!$%\^&\*;:{}=\-_`~()]/, 'g')
 
@@ -101,11 +123,13 @@ function generateBlanks(madlibText, POSindexes){
 	var nounsToBlank = noun.slice(0, (noun.length)/5)
 	var advsToBlank = adv.slice(0, (adv.length)/5)
 	var numsToBlank = num.slice(0, 1)
+	var entityBreak = entity.length/3 < 1 ? 1 : entity.length/3
+	var entitiesToBlank = entity.slice(0, entityBreak)
 
 	//console.log("verbsToBlank: ", verbsToBlank)
 
-	var toMakeBlank = verbsToBlank.concat(nounsToBlank).concat(advsToBlank).concat(numsToBlank)
-	//console.log("toMakeBlank: ", toMakeBlank)
+	var toMakeBlank = verbsToBlank.concat(nounsToBlank).concat(advsToBlank).concat(numsToBlank).concat(entitiesToBlank)
+	console.log("toMakeBlank: ", toMakeBlank)
 	var madlibTextDisplay = madlibText.slice(0)
 
 
@@ -123,7 +147,7 @@ function generateBlanks(madlibText, POSindexes){
 		//madlibText[toMakeBlank[i]] = {}
 	}
 	//console.log("toMakeBlank.length: ", toMakeBlank.length)
-	return {madlibTextDisplay, numBlanks: toMakeBlank.length}
+	return {madlibTextDisplay, numBlanks: toMakeBlank.length, toMakeBlank}
 
 }
 
@@ -170,7 +194,7 @@ function replaceEntities(words, POS, labels, entities){
 		console.log("ENTITY INDEX: ", entityIndex)
 		words = words.slice(0, entityIndex).concat([words.slice(entityIndex, entityIndex + entityLength).join(" ")]).concat(words.slice(entityIndex + entityLength))
 		labels = labels.slice(0, entityIndex).concat([entityType]).concat(labels.slice(entityIndex + entityLength))
-		POS = POS.slice(0, entityIndex).concat(['NOUN']).concat(POS.slice(entityIndex + entityLength))
+		POS = POS.slice(0, entityIndex).concat(['ENTITY']).concat(POS.slice(entityIndex + entityLength))
 	
 		console.log("LENGTHS: ", words.length, labels.length, POS.length)
 	}

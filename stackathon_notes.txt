@@ -40,3 +40,24 @@ mad lib of the day. pull a news article
 
 
 i have it ignoring adjective modifiers likes "so" and "very"
+
+instead of attaching the punctuation to the end of the word, leave it in the words array. When displaying the madlib on results page, check if the next word is a punctuation and then either display word + " " or word without space after
+
+
+if NUM is "one" ie one person and you get a blank and put in "five" it will read "five person" is there an API that will convert singular to plural and vice versa
+
+
+issues with "thought" "seen" verbs that are followed by "that"
+"We have thought that..." if "thought" is blanked as a verb, and someone could put "swim"
+
+More specific categories: web scraping?
+body-parts
+method of transport
+place vs location (ie New York vs library)
+unit of measurement/distance
+
+
+
+
+
+

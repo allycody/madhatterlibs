@@ -54,6 +54,7 @@ router.post("/v1beta1/documents:annotateText", function(req, res, next){
     //console.log('People mentions: ', annotations.entities.people[0].mentions);
     
     var data = organizeAnnotations(annotations)
+    console.log(data.blanks)
     //console.log("DATA: ", data)
     // if(data instanceof Error){
     //   res.json({})

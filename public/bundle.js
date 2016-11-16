@@ -88,6 +88,10 @@
 	
 	var _PlayContainer2 = _interopRequireDefault(_PlayContainer);
 	
+	var _AnalyzeContainer = __webpack_require__(366);
+	
+	var _AnalyzeContainer2 = _interopRequireDefault(_AnalyzeContainer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	(0, _reactDom.render)(_react2.default.createElement(
@@ -99,9 +103,9 @@
 	    _react2.default.createElement(
 	      _reactRouter.Route,
 	      { path: '/', component: _AppContainer2.default },
-	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Welcome2.default }),
+	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _PlayContainer2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: 'play', component: _OriginalContainer2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: 'analyze', component: _Analyze2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: 'analyze', component: _AnalyzeContainer2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: 'madlib', component: _ResultsContainer2.default })
 	    )
 	  )
@@ -35260,7 +35264,7 @@
 						_react2.default.createElement(
 							_reactMdl.Button,
 							{ raised: true, style: { margin: "0 0 30px 0" }, onClick: function onClick() {
-									_reactRouter.browserHistory.push('/original');
+									_reactRouter.browserHistory.push('/play');
 								} },
 							' Make your own! '
 						),
@@ -36961,17 +36965,24 @@
 						{ href: './App.js', download: 'Downloaded_File' },
 						'Download'
 					),
-					'Analyze',
 					_react2.default.createElement(
-						'form',
-						{ onSubmit: this.handleSubmit },
-						_react2.default.createElement(
-							'label',
-							null,
-							'Text to analyze '
-						),
-						_react2.default.createElement('textarea', { name: 'message', rows: '10', cols: '30' }),
-						_react2.default.createElement('input', { type: 'submit' })
+						'h3',
+						{ className: 'page-header' },
+						'ANALYSIS RESULTS'
+					),
+					_react2.default.createElement(
+						'div',
+						null,
+						' ',
+						Object.toString(this.props.inputAnalysis),
+						' '
+					),
+					_react2.default.createElement(
+						'div',
+						null,
+						' ',
+						Object.toString(this.props.completedAnalysis),
+						' '
 					)
 				);
 			}
@@ -37038,7 +37049,9 @@
 		entities: _text.entities,
 		madlibText: _text.madlibText,
 		numBlanks: _text.numBlanks,
-		complete: _text.complete
+		blanks: _text.blanks,
+		completedAnalysis: _text.completedAnalysis,
+		inputAnalysis: _text.inputAnalysis
 	});
 	
 	exports.default = rootReducer;
@@ -37052,7 +37065,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.fetchItemById = exports.clearStore = exports.annotateText = exports.setComplete = exports.setNumBlanks = exports.setEntities = exports.setLabels = exports.setPOS = exports.setWords = exports.setMadlibText = exports.setText = undefined;
+	exports.analyzeResults = exports.clearStore = exports.annotateText = exports.setCompletedAnalysis = exports.setInputAnalysis = exports.setCompletedText = exports.setComplete = exports.setBlanks = exports.setNumBlanks = exports.setEntities = exports.setLabels = exports.setPOS = exports.setWords = exports.setMadlibText = exports.setText = undefined;
 	exports.inputText = inputText;
 	exports.madlibText = madlibText;
 	exports.words = words;
@@ -37060,7 +37073,11 @@
 	exports.labels = labels;
 	exports.entities = entities;
 	exports.numBlanks = numBlanks;
+	exports.blanks = blanks;
 	exports.complete = complete;
+	exports.completedText = completedText;
+	exports.inputAnalysis = inputAnalysis;
+	exports.completedAnalysis = completedAnalysis;
 	
 	var _axios = __webpack_require__(324);
 	
@@ -37078,6 +37095,10 @@
 	var SET_MADLIB = 'SET_MADLIB';
 	var SET_NUMBLANKS = 'SET_NUMBLANKS';
 	var SET_COMPLETE = 'SET_COMPLETE';
+	var SET_BLANKS = 'SET_BLANKS';
+	var SET_COMPLETEDTEXT = 'SET_COMPLETEDTEXT';
+	var SET_INPUT_ANALYSIS = 'SET_INPUT_ANALYSIS';
+	var SET_COMPLETED_ANALYSIS = 'SET_COMPLETED_ANALYSIS';
 	
 	//-------------------------------------------------------------------------
 	
@@ -37132,10 +37153,18 @@
 	};
 	
 	var setNumBlanks = exports.setNumBlanks = function setNumBlanks(numBlanks) {
-		console.log("setting numBlanks to: ", numBlanks);
+		//console.log("setting numBlanks to: ", numBlanks)
 		return {
 			type: SET_NUMBLANKS,
 			numBlanks: numBlanks
+		};
+	};
+	
+	var setBlanks = exports.setBlanks = function setBlanks(blanks) {
+		console.log("setting blanks to: ", blanks);
+		return {
+			type: SET_BLANKS,
+			blanks: blanks
 		};
 	};
 	
@@ -37144,6 +37173,32 @@
 		return {
 			type: SET_COMPLETE,
 			complete: complete
+		};
+	};
+	
+	var setCompletedText = exports.setCompletedText = function setCompletedText(completedText) {
+		console.log("in setentities action creator");
+		return {
+			type: SET_COMPLETEDTEXT,
+			completedText: completedText
+		};
+	};
+	
+	var setInputAnalysis = exports.setInputAnalysis = function setInputAnalysis(inputAnalysis) {
+		console.log("in setInputAnalysis");
+		console.log("analysis object: ", inputAnalysis);
+		return {
+			type: SET_INPUT_ANALYSIS,
+			inputAnalysis: inputAnalysis
+		};
+	};
+	
+	var setCompletedAnalysis = exports.setCompletedAnalysis = function setCompletedAnalysis(completedAnalysis) {
+		console.log("in setCompletedAnalysis");
+		console.log("analysis object: ", completedAnalysis);
+		return {
+			type: SET_COMPLETED_ANALYSIS,
+			completedAnalysis: completedAnalysis
 		};
 	};
 	
@@ -37244,6 +37299,19 @@
 		}
 	}
 	
+	function blanks() {
+		var blanks = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+		var action = arguments[1];
+	
+		console.log("BLANKS: ", action.blanks);
+		switch (action.type) {
+			case 'SET_BLANKS':
+				return action.blanks;
+			default:
+				return blanks;
+		}
+	}
+	
 	function complete() {
 		var complete = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
 		var action = arguments[1];
@@ -37254,6 +37322,45 @@
 				return action.complete;
 			default:
 				return complete;
+		}
+	}
+	
+	function completedText() {
+		var completedText = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+		var action = arguments[1];
+	
+		console.log("ACTION: ", action);
+		switch (action.type) {
+			case 'SET_COMPLETEDTEXT':
+				return action.completedText;
+			default:
+				return completedText;
+		}
+	}
+	
+	function inputAnalysis() {
+		var inputAnalysis = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+		var action = arguments[1];
+	
+		console.log("ACTION: ", action);
+		switch (action.type) {
+			case 'SET_INPUT_ANALYSIS':
+				return action.inputAnalysis;
+			default:
+				return inputAnalysis;
+		}
+	}
+	
+	function completedAnalysis() {
+		var completedAnalysis = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+		var action = arguments[1];
+	
+		console.log("ACTION: ", action);
+		switch (action.type) {
+			case 'SET_COMPLETED_ANALYSIS':
+				return action.completedAnalysis;
+			default:
+				return completedAnalysis;
 		}
 	}
 	
@@ -37273,7 +37380,8 @@
 				dispatch(setEntities(res.entities));
 				dispatch(setMadlibText(res.madlibText));
 				dispatch(setNumBlanks(res.numBlanks));
-				dispatch(setComplete(1));
+				//dispatch(setComplete(1))
+				dispatch(setBlanks(res.blanks));
 			});
 		};
 	};
@@ -37286,16 +37394,26 @@
 			dispatch(setEntities({}));
 			dispatch(setMadlibText([]));
 			dispatch(setNumBlanks(null));
-			dispatch(setComplete(0));
+			//dispatch(setComplete(0))
+			dispatch(setBlanks([]));
+			dispatch(setCompletedText(""));
 		};
 	};
 	
-	var fetchItemById = exports.fetchItemById = function fetchItemById(itemId) {
+	var analyzeResults = exports.analyzeResults = function analyzeResults(inputText, completedText) {
 		return function (dispatch) {
-			_axios2.default.get('/api/items/${itemId}').then(function (res) {
-				return res.data;
-			}).then(function (items) {
-				return dispatch(getItems(items));
+			dispatch(setCompletedText(completedText));
+			_axios2.default.post('/api/v3/tone', { message: inputText }).then(function (resInput) {
+				return resInput.data;
+			}).then(function (inputRes) {
+				console.log("INPUT RES: ", inputRes);
+				_axios2.default.post('/api/v3/tone', { message: completedText }).then(function (resCompleted) {
+					return resCompleted.data;
+				}).then(function (completedRes) {
+					console.log("completed analysis: !!!! CompletedRes ", completedRes);
+					dispatch(setInputAnalysis(inputRes));
+					dispatch(setCompletedAnalysis(completedRes));
+				});
 			});
 		};
 	};
@@ -38400,6 +38518,11 @@
 					'div',
 					null,
 					_react2.default.createElement(
+						'h3',
+						{ className: 'page-header' },
+						'PLAY WITH THE MAD HATTER'
+					),
+					_react2.default.createElement(
 						'form',
 						{ onSubmit: this.handleSubmit },
 						_react2.default.createElement(
@@ -38413,7 +38536,7 @@
 							_react2.default.createElement(
 								'div',
 								{ className: 'col-lg-4 col-lg-8' },
-								_react2.default.createElement('textarea', { className: 'form-control', name: 'inputText', id: 'txt', type: 'password' })
+								_react2.default.createElement('textarea', { className: 'form-control', name: 'inputText', id: 'txt' })
 							)
 						),
 						_react2.default.createElement(
@@ -38509,8 +38632,10 @@
 		    POS = _ref.POS,
 		    words = _ref.words,
 		    entities = _ref.entities,
-		    numBlanks = _ref.numBlanks;
-		return { inputText: inputText, madlibText: madlibText, POS: POS, words: words, entities: entities, numBlanks: numBlanks };
+		    numBlanks = _ref.numBlanks,
+		    labels = _ref.labels,
+		    blanks = _ref.blanks;
+		return { inputText: inputText, madlibText: madlibText, POS: POS, words: words, entities: entities, numBlanks: numBlanks, labels: labels, blanks: blanks };
 	};
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		return {
@@ -38525,6 +38650,9 @@
 			},
 			resetStore: function resetStore() {
 				dispatch((0, _text.clearStore)());
+			},
+			analyzeInputs: function analyzeInputs(inputText, completedText) {
+				dispatch((0, _text.analyzeResults)(inputText, completedText));
 			}
 		};
 	};
@@ -38604,7 +38732,11 @@
 			key: 'getPOS',
 			value: function getPOS(idx) {
 				console.log("this: ", this);
-				return this.props.POS[idx];
+				var POS = this.props.POS[idx];
+				if (POS === 'ENTITY') {
+					POS = this.props.labels[idx];
+				}
+				return POS;
 			}
 		}, {
 			key: 'handleSubmit',
@@ -38616,75 +38748,86 @@
 				console.log("keys: ", keys);
 				for (var i = 0; i < 5; i++) {
 					console.log('my val at ' + i + ': ', e.target[keys[i]].value);
-					_reactRouter.browserHistory.push('/analyze');
 				}
-				//console.log("what is the next key? : ", e.target[keys[1]].value)
 	
+				var completedText = this.props.madlibText.slice(0);
+				console.log("blanks in handleSubmit: ", this.props.blanks);
+				for (var i = 0; i < this.props.blanks.length; i++) {
+					console.log("target value: ", e.target[keys[i]].value);
+					completedText[this.props.blanks[i]] = e.target[keys[i]].value;
+				}
 	
-				//  	var document = languageClient.document(e.target.inputText.value);
-	
-				//  	// Analyze the sentiment of the document.
-				//  	document.detectSentiment(function(err, sentiment) {
-				//  		if (err) {
-				//   		console.log(err);
-				// 	    res.end('Cloud Natural Language Error: Sentiment');
-				// 	} else {
-				// 	    console.log("SENTIMENT: ", sentiment)
-				// 	}
-				// 	  // sentiment = 100 // Large numbers represent more positive sentiments.
-				// });
-	
-				// // Parse the syntax of the document.
-				// document.annotate(function(err, annotations) {
-				//   	if (err) {
-				//       	console.log(err);
-				//       	res.end('Cloud Natural Language Error: Annotate');
-				//     } else {
-				//       	console.log("ANNOTATIONS: ", annotations)
-				//       	var textToChange = annotations.tokens
-				// 	    var words = [];
-				// 	    var POS = [];
-				// 	    textToChange.forEach(function(element){
-				// 	    	words.push(element.text)
-				// 	        POS.push(element.partOfSpeechTag)
-				// 	    })
-				//       // MAKE HELPER FUNCTION FOR FIND VERBS, NOUNS, ETC
-				//       // Turn token json into one object with word : POS key/val pairs?
-				//       // make an array that is split by words
-				//       // make an array that has a POS corresponding to each word in the words arr
-				//       	console.log("WORDS: ", words)
-				//       	console.log("POS: ", POS)
-				//       // Make object that for each POS there is a key whose val is an array of idexes 
-				//       	textToChange[0].text = "Donations"
-				//       	console.log("textToChange: ", textToChange)
-				//       	console.log("tokens: ", annotations.tokens)
-				//     }
-	
-				//   // annotations = {
-				//   //   language: 'en',
-				//   //   sentiment: 100,
-				//   //   entities: {},
-				//   //   sentences: ['Contributions welcome!'],
-				//   //   tokens: [
-				//   //     {
-				//   //       text: 'Contributions',
-				//   //       partOfSpeech: 'Noun (common and proper)',
-				//   //       partOfSpeechTag: 'NOUN'
-				//   //     },
-				//   //     {
-				//   //       text: 'welcome',
-				//   //       partOfSpeech: 'Verb (all tenses and modes)',
-				//   //       partOfSpeechTag: 'VERB'
-				//   //     },
-				//   //     {
-				//   //       text: '!',
-				//   //       partOfSpeech: 'Punctuation',
-				//   //       partOfSpeechTag: 'PUNCT'
-				//   //     }
-				//   //   ]
-				//   // }
-				// });
+				console.log("completed text: ", completedText.join(" "));
+				this.props.analyzeInputs(this.props.inputText, completedText);
+				_reactRouter.browserHistory.push('/analyze');
 			}
+			//console.log("what is the next key? : ", e.target[keys[1]].value)
+	
+	
+			//  	var document = languageClient.document(e.target.inputText.value);
+	
+			//  	// Analyze the sentiment of the document.
+			//  	document.detectSentiment(function(err, sentiment) {
+			//  		if (err) {
+			//   		console.log(err);
+			// 	    res.end('Cloud Natural Language Error: Sentiment');
+			// 	} else {
+			// 	    console.log("SENTIMENT: ", sentiment)
+			// 	}
+			// 	  // sentiment = 100 // Large numbers represent more positive sentiments.
+			// });
+	
+			// // Parse the syntax of the document.
+			// document.annotate(function(err, annotations) {
+			//   	if (err) {
+			//       	console.log(err);
+			//       	res.end('Cloud Natural Language Error: Annotate');
+			//     } else {
+			//       	console.log("ANNOTATIONS: ", annotations)
+			//       	var textToChange = annotations.tokens
+			// 	    var words = [];
+			// 	    var POS = [];
+			// 	    textToChange.forEach(function(element){
+			// 	    	words.push(element.text)
+			// 	        POS.push(element.partOfSpeechTag)
+			// 	    })
+			//       // MAKE HELPER FUNCTION FOR FIND VERBS, NOUNS, ETC
+			//       // Turn token json into one object with word : POS key/val pairs?
+			//       // make an array that is split by words
+			//       // make an array that has a POS corresponding to each word in the words arr
+			//       	console.log("WORDS: ", words)
+			//       	console.log("POS: ", POS)
+			//       // Make object that for each POS there is a key whose val is an array of idexes 
+			//       	textToChange[0].text = "Donations"
+			//       	console.log("textToChange: ", textToChange)
+			//       	console.log("tokens: ", annotations.tokens)
+			//     }
+	
+			//   // annotations = {
+			//   //   language: 'en',
+			//   //   sentiment: 100,
+			//   //   entities: {},
+			//   //   sentences: ['Contributions welcome!'],
+			//   //   tokens: [
+			//   //     {
+			//   //       text: 'Contributions',
+			//   //       partOfSpeech: 'Noun (common and proper)',
+			//   //       partOfSpeechTag: 'NOUN'
+			//   //     },
+			//   //     {
+			//   //       text: 'welcome',
+			//   //       partOfSpeech: 'Verb (all tenses and modes)',
+			//   //       partOfSpeechTag: 'VERB'
+			//   //     },
+			//   //     {
+			//   //       text: '!',
+			//   //       partOfSpeech: 'Punctuation',
+			//   //       partOfSpeechTag: 'PUNCT'
+			//   //     }
+			//   //   ]
+			//   // }
+			// });
+	
 		}, {
 			key: 'render',
 			value: function render() {
@@ -38725,7 +38868,11 @@
 					_react2.default.createElement(
 						'div',
 						{ style: { padding: "30px 0px 30px 0px" } },
-						'FILL THIS OUT'
+						_react2.default.createElement(
+							'h3',
+							{ className: 'page-header' },
+							'FILL THIS OUT'
+						)
 					),
 					_react2.default.createElement(
 						'form',
@@ -38737,7 +38884,7 @@
 									{ key: idx,
 										onChange: function onChange() {},
 										label: this.getPOS(idx),
-										style: { width: '100px', display: "inline-block", padding: "0px, 3px, 0px, 3px" },
+										style: { width: '123px', display: "inline-block", padding: "0px, 3px, 0px, 3px" },
 										name: idx
 									},
 									_react2.default.createElement(
@@ -38769,28 +38916,28 @@
 					)
 				);
 			}
-	
-			// 	renderLoginSignup(){
-			// 		return(
-			// 			<ul className="nav navbar-nav navbar-right">
-			// 			<li><Link to="/login" activeClassName="active"> Login </Link></li>
-			// 			</ul>
-			// 			)
-			// 	}
-	
-			// 	renderLogout(){
-			// 		return (
-			//       	<ul className="nav navbar-nav navbar-right">
-			//         <WhoAmI/>
-			//       	</ul>
-			//     )
-	
-			// 	}
-	
 		}]);
 	
 		return Results;
 	}(_react.Component);
+	
+	// 	renderLoginSignup(){
+	// 		return(
+	// 			<ul className="nav navbar-nav navbar-right">
+	// 			<li><Link to="/login" activeClassName="active"> Login </Link></li>
+	// 			</ul>
+	// 			)
+	// 	}
+	
+	// 	renderLogout(){
+	// 		return (
+	//       	<ul className="nav navbar-nav navbar-right">
+	//         <WhoAmI/>
+	//       	</ul>
+	//     )
+	
+	// 	}
+	
 	
 	exports.default = Results;
 
@@ -38841,6 +38988,58 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Play2.default);
+
+/***/ },
+/* 366 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _reactRedux = __webpack_require__(172);
+	
+	var _Analyze = __webpack_require__(350);
+	
+	var _Analyze2 = _interopRequireDefault(_Analyze);
+	
+	var _text = __webpack_require__(353);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(_ref) {
+		var completedText = _ref.completedText,
+		    blanks = _ref.blanks,
+		    inputText = _ref.inputText,
+		    completedAnalysis = _ref.completedAnalysis,
+		    inputAnalysis = _ref.inputAnalysis;
+		return { completedText: completedText, blanks: blanks, inputText: inputText, completedAnalysis: completedAnalysis, inputAnalysis: inputAnalysis };
+	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			// setInputText(givenText){
+			// 	console.log("in setInputText")
+			// 	console.log("given text: ", givenText)
+			// 	console.log("type: ", typeof givenText)
+			// 	dispatch(setText(givenText))
+			// },
+			// fetchAnnotations(givenText){
+			// 	dispatch(annotateText(givenText))
+			// },
+	
+			// warningNoText(){
+			// 	dispatch(setNumBlanks(0))
+			// },
+	
+			// resetStore(){
+			// 	dispatch(clearStore())
+			// }
+		};
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Analyze2.default);
 
 /***/ }
 /******/ ]);

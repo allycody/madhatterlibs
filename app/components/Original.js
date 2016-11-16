@@ -125,13 +125,13 @@ export default class Original extends Component{
 		return(
      
 		<div>
-   
+   		<h3 className="page-header">PLAY WITH THE MAD HATTER</h3>
     <form onSubmit={this.handleSubmit}>
   
       <div className="form-group row">
         <label className="col-sm-4 col-form-label col-sm-4" htmlFor="txt">Input your story or dialogue here:</label>
         <div className="col-lg-4 col-lg-8">
-          <textarea className="form-control" name="inputText" id="txt" type="password" />
+          <textarea className="form-control" name="inputText" id="txt" />
         </div>
       </div>
       <div className="form-group row">

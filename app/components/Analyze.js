@@ -59,13 +59,11 @@ export default class Analyze extends Component{
 		return(
       <div>
       	<a href='./App.js' download='Downloaded_File'>Download</a>
-        Analyze
+        <h3 className="page-header">ANALYSIS RESULTS</h3>
+        <div> {Object.toString(this.props.inputAnalysis)} </div>
+        <div> {Object.toString(this.props.completedAnalysis)} </div>
 
-        <form onSubmit={this.handleSubmit}>
-        				<label>Text to analyze </label>
-        				<textarea name="message" rows="10" cols="30"/>
-					<input type="submit"/>
-				</form>
+        
       </div>
 			)
 	}

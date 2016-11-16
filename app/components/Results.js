@@ -33,7 +33,11 @@ export default class Results extends Component{
 
 	getPOS(idx){
 		console.log("this: ", this)
-		return this.props.POS[idx]
+		var POS = this.props.POS[idx]
+		if(POS === 'ENTITY'){
+			POS = this.props.labels[idx]
+		}
+		return POS
 	}
 
 	handleSubmit(e){
@@ -44,6 +48,17 @@ export default class Results extends Component{
 	  	console.log("keys: ", keys)
 	  	for(var i= 0; i < 5; i++){
 	  	console.log(`my val at ${i}: `, e.target[keys[i]].value)
+	 	}
+
+	  	var completedText = this.props.madlibText.slice(0)
+	  	console.log("blanks in handleSubmit: ", this.props.blanks)
+	  	for (var i = 0; i < this.props.blanks.length; i++){
+	  		console.log("target value: ", e.target[keys[i]].value)
+	  		completedText[this.props.blanks[i]] = e.target[keys[i]].value
+	  	}
+
+	  	console.log("completed text: ", completedText.join(" "))
+	  	this.props.analyzeInputs(this.props.inputText, completedText)
 	  	browserHistory.push('/analyze')
 	  }
 	  	//console.log("what is the next key? : ", e.target[keys[1]].value)
@@ -112,7 +127,6 @@ export default class Results extends Component{
 		//   //   ]
 		//   // }
 		// });
-	}
 
 	render(){
 
@@ -144,7 +158,7 @@ export default class Results extends Component{
 		return(
       <div>
       <div style={{padding: "30px 0px 30px 0px"}}>
-        FILL THIS OUT
+        <h3 className="page-header">FILL THIS OUT</h3>
         </div>
 
         <form onSubmit={this.handleSubmit} method='post'>
@@ -154,7 +168,7 @@ export default class Results extends Component{
         	 			<Textfield key={idx}
 			    			onChange={() => {}}
 			    			label={this.getPOS(idx)}
-			    			style={{width: '100px', display: "inline-block", padding: "0px, 3px, 0px, 3px"}}
+			    			style={{width: '123px', display: "inline-block", padding: "0px, 3px, 0px, 3px"}}
 							name={idx}
 						>
 							<i className="material-icons mdl-textfield__label__icon">
@@ -174,7 +188,7 @@ export default class Results extends Component{
 				browserHistory.push('/play')}}>Make Another</Button>
       </div>
 			)
-	}
+	}}
 
 // 	renderLoginSignup(){
 // 		return(
@@ -192,4 +206,4 @@ export default class Results extends Component{
 //     )
 
 // 	}
- }
+

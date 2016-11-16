@@ -11,15 +11,16 @@ import store from './store'
 import OriginalContainer from 'APP/app/containers/OriginalContainer'
 import ResultsContainer from 'APP/app/containers/ResultsContainer'
 import PlayContainer from 'APP/app/containers/PlayContainer'
+import AnalyzeContainer from 'APP/app/containers/AnalyzeContainer'
 
 render (
   <Provider store={store}>
    {/* <Root/> */}
    <Router history={browserHistory}>
    	<Route path='/' component={AppContainer} >
-   		<IndexRoute component={Welcome}/>
+   		<IndexRoute component={PlayContainer}/>
       <Route path="play" component={OriginalContainer}/> 
-      <Route path="analyze" component={Analyze} />
+      <Route path="analyze" component={AnalyzeContainer} />
       <Route path="madlib" component={ResultsContainer} />
    	</Route>
    </Router>

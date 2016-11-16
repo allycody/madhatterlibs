@@ -245,7 +245,7 @@ span.icon-bar {
 .mdl-textfield__label{
   width: 100%;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   top: 15px;
 }
 
@@ -265,5 +265,6 @@ span.icon-bar {
 }
 
 textarea.form-control {
-  height: 400px;
+  height: 300px;
+  resize: both;
 }

@@ -10,6 +10,10 @@ const SET_ENTITIES = 'SET_ENTITIES';
 const SET_MADLIB = 'SET_MADLIB';
 const SET_NUMBLANKS = 'SET_NUMBLANKS';
 const SET_COMPLETE = 'SET_COMPLETE';
+const SET_BLANKS = 'SET_BLANKS';
+const SET_COMPLETEDTEXT = 'SET_COMPLETEDTEXT';
+const SET_INPUT_ANALYSIS = 'SET_INPUT_ANALYSIS';
+const SET_COMPLETED_ANALYSIS = 'SET_COMPLETED_ANALYSIS';
 
 //-------------------------------------------------------------------------
 
@@ -64,10 +68,18 @@ export const setEntities = (entities) => {
 }
 
 export const setNumBlanks = (numBlanks) => {
-	console.log("setting numBlanks to: ", numBlanks)
+	//console.log("setting numBlanks to: ", numBlanks)
 	return ({
 		type: SET_NUMBLANKS,
 		numBlanks
+	})
+}
+
+export const setBlanks = (blanks) => {
+	console.log("setting blanks to: ", blanks)
+	return ({
+		type: SET_BLANKS,
+		blanks
 	})
 }
 
@@ -79,6 +91,31 @@ export const setComplete = (complete) => {
 	})
 }
 
+export const setCompletedText = (completedText) => {
+	console.log("in setentities action creator")
+	return ({
+		type: SET_COMPLETEDTEXT,
+		completedText
+	})
+}
+
+export const setInputAnalysis = (inputAnalysis) => {
+	console.log("in setInputAnalysis")
+	console.log("analysis object: ", inputAnalysis)
+	return ({
+		type: SET_INPUT_ANALYSIS,
+		inputAnalysis
+	})
+}
+
+export const setCompletedAnalysis = (completedAnalysis) => {
+	console.log("in setCompletedAnalysis")
+	console.log("analysis object: ", completedAnalysis)
+	return ({
+		type: SET_COMPLETED_ANALYSIS,
+		completedAnalysis
+	})
+}
 
 //-------------------------------------------------------------------------
 
@@ -156,6 +193,16 @@ export function numBlanks(numBlanks = null, action) {
 	}
 }
 
+export function blanks(blanks = [], action) {
+	console.log("BLANKS: ", action.blanks)
+	switch(action.type) {
+		case 'SET_BLANKS':
+			return action.blanks
+		default:
+			return blanks;
+	}
+}
+
 export function complete(complete = 0, action) {
 	console.log("ACTION: ", action)
 	switch(action.type) {
@@ -165,6 +212,38 @@ export function complete(complete = 0, action) {
 			return complete;
 	}
 }
+
+export function completedText(completedText = '', action) {
+	console.log("ACTION: ", action)
+	switch(action.type) {
+		case 'SET_COMPLETEDTEXT':
+			return action.completedText
+		default:
+			return completedText;
+	}
+}
+
+export function inputAnalysis(inputAnalysis = {}, action) {
+	console.log("ACTION: ", action)
+	switch(action.type) {
+		case 'SET_INPUT_ANALYSIS':
+			return action.inputAnalysis
+		default:
+			return inputAnalysis;
+	}
+}
+
+export function completedAnalysis(completedAnalysis = {}, action) {
+	console.log("ACTION: ", action)
+	switch(action.type) {
+		case 'SET_COMPLETED_ANALYSIS':
+			return action.completedAnalysis
+		default:
+			return completedAnalysis;
+	}
+}
+
+
 
 //-------------------------------------------------------------------------
 
@@ -181,7 +260,8 @@ export const annotateText = (inputText) => ((dispatch) => {
 			dispatch(setEntities(res.entities))
 			dispatch(setMadlibText(res.madlibText))
 			dispatch(setNumBlanks(res.numBlanks))
-			dispatch(setComplete(1))
+			//dispatch(setComplete(1))
+			dispatch(setBlanks(res.blanks))
 		})
 })
 
@@ -192,15 +272,26 @@ export const clearStore = () => ((dispatch) => {
 	dispatch(setEntities({}))
 	dispatch(setMadlibText([]))
 	dispatch(setNumBlanks(null))
-	dispatch(setComplete(0))
+	//dispatch(setComplete(0))
+	dispatch(setBlanks([]))
+	dispatch(setCompletedText(""))
 })
 
-export const fetchItemById = (itemId) => ((dispatch) => {
-	axios.get('/api/items/${itemId}')
-    .then(res => res.data)
-    .then(items => dispatch(getItems(items)));
+export const analyzeResults = (inputText, completedText) => ((dispatch) => {
+	dispatch(setCompletedText(completedText))
+	axios.post('/api/v3/tone', {message: inputText})
+	.then(resInput => resInput.data)
+	.then(inputRes => {
+		console.log("INPUT RES: ", inputRes)
+		axios.post('/api/v3/tone', {message: completedText})
+		.then(resCompleted => resCompleted.data)
+		.then(completedRes => {
+			console.log("completed analysis: !!!! CompletedRes ", completedRes)
+			dispatch(setInputAnalysis(inputRes))
+			dispatch(setCompletedAnalysis(completedRes))
+		})
+	})
 })
-
 
 
 
